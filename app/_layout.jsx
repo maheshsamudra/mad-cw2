@@ -7,6 +7,8 @@ import {
   Nunito_700Bold,
   Nunito_600SemiBold,
 } from "@expo-google-fonts/nunito";
+import useAuthentication from "../hooks/useAuthentication";
+import useUserStore from "../stores/useUserStore";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -29,16 +31,20 @@ export default function RootLayout() {
     Nunito_700Bold,
   });
 
+  const userReady = useUserStore((state) => state.userReady);
+
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
     if (error) throw error;
   }, [error]);
 
+  useAuthentication();
+
   useEffect(() => {
-    if (loaded) {
+    if (loaded && userReady) {
       SplashScreen.hideAsync();
     }
-  }, [loaded]);
+  }, [loaded, userReady]);
 
   if (!loaded) {
     return null;

@@ -6,6 +6,7 @@ const styleVariables = {
     semiBold: "Nunito_600SemiBold",
     bold: "Nunito_700Bold",
   },
+  gap: 16
 };
 
 export default styleVariables;

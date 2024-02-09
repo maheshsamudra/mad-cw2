@@ -1,14 +1,15 @@
 import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
 import {
-  useFonts,
   Nunito_400Regular,
   Nunito_500Medium,
-  Nunito_700Bold,
   Nunito_600SemiBold,
+  Nunito_700Bold,
+  useFonts,
 } from "@expo-google-fonts/nunito";
 import useAuthentication from "../hooks/useAuthentication";
 import useUserStore from "../stores/useUserStore";
+import styleVariables from "../constants/styleVariables";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -51,27 +52,25 @@ export default function RootLayout() {
   }
 
   return (
-    <>
-      <Stack
-        screenOptions={{
-          headerShown: false,
-          headerText: "",
-          headerStyle: {
-            backgroundColor: "white",
-          },
-          headerTintColor: "#fff",
-          headerTitleStyle: {
-            fontWeight: "bold",
-          },
-          contentStyle: {
-            backgroundColor: "#fff",
-          },
-          screen: {
-            unmountOnBlur: true,
-            backgroundColor: "#fff",
-          },
-        }}
-      />
-    </>
+    <Stack
+      screenOptions={{
+        headerShown: false,
+        headerText: "",
+        headerStyle: {
+          backgroundColor: "white",
+        },
+        headerTintColor: "black",
+        headerTitleStyle: {
+          fontFamily: styleVariables.fonts.bold,
+        },
+        contentStyle: {
+          backgroundColor: "#fff",
+        },
+        screen: {
+          unmountOnBlur: true,
+          backgroundColor: "#fff",
+        },
+      }}
+    />
   );
 }

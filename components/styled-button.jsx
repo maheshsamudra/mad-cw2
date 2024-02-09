@@ -3,9 +3,19 @@ import { Pressable, StyleSheet } from "react-native";
 import StyledText from "./styled-text";
 import styleVariables from "../constants/styleVariables";
 
-const StyledButton = ({ title = "Submit", onPress = () => null }) => {
+const StyledButton = ({
+  title = "Submit",
+  onPress = () => null,
+  progress = false,
+}) => {
   return (
-    <Pressable onPress={onPress} style={styles.button}>
+    <Pressable
+      onPress={() => {
+        if (progress) return;
+        onPress();
+      }}
+      style={[styles.button, progress ? styles.progress : {}]}
+    >
       <StyledText style={styles.text}>{title}</StyledText>
     </Pressable>
   );
@@ -18,6 +28,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontFamily: styleVariables.fonts.medium,
     fontSize: 16,
+    textAlign: "center",
   },
   button: {
     backgroundColor: styleVariables.colors.primary,
@@ -25,4 +36,5 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 4,
   },
+  progress: { opacity: 0.5 },
 });

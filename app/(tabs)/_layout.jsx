@@ -1,53 +1,81 @@
-import {Slot, Tabs, useRouter} from "expo-router";
+import { Tabs, usePathname } from "expo-router";
 import { AntDesign } from "@expo/vector-icons";
 
 import React from "react";
 import styleVariables from "../../constants/styleVariables";
-import {Platform, ScrollView, StatusBar, View} from "react-native";
-import {useSafeAreaInsets} from "react-native-safe-area-context";
+import { Platform, StatusBar, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function TabLayout() {
-    const insets = useSafeAreaInsets();
+  const insets = useSafeAreaInsets();
 
   return (
+    <>
+      <Tabs
+        screenOptions={{
+          tabBarActiveTintColor: styleVariables.colors.primary,
+          headerTitleStyle: {
+            fontFamily: styleVariables.fonts.bold,
+          },
+          tabBarStyle: {
+            paddingTop: 4,
+          },
+          tabBarLabelStyle: {
+            fontFamily: styleVariables.fonts.regular,
+            fontSize: 12,
+          },
+        }}
+      >
+        {tabs.map(
+          ({
+            name,
+            title,
+            icon,
+            size = 24,
+            tabBarIconStyle = {},
+            href = null,
+          }) => (
+            <Tabs.Screen
+              key={name}
+              name={name}
+              options={{
+                title,
+                tabBarIcon: ({ color }) => (
+                  <View style={tabBarIconStyle}>
+                    <AntDesign name={icon} size={size} color={color} />
+                  </View>
+                ),
+              }}
+            />
+          ),
+        )}
+      </Tabs>
 
-        <View
-            style={{
-                backgroundColor: "white",
-                flex: 1,
-                paddingLeft: insets.left,
-                paddingRight: insets.right,
-            }}
-        >
-
-                <Tabs
-                    screenOptions={{
-                        tabBarActiveTintColor: styleVariables.colors.primary,
-                        headerTitleStyle: {
-                            fontFamily: styleVariables.fonts.medium,
-                        },
-                        tabBarStyle: {
-                            paddingTop: 4,
-                        },
-                    }}
-                >
-                    <Tabs.Screen
-                        name="index"
-                        options={{
-                            title: "Home",
-                            tabBarLabelStyle: {
-                                fontFamily: styleVariables.fonts.regular,
-                                fontSize: 12,
-                            },
-                            tabBarIcon: ({ color }) => (
-                                <AntDesign name="home" size={24} color={color} />
-                            ),
-                        }}
-                    />
-                </Tabs>
-
-            <StatusBar style={Platform.OS === "ios" ? "dark" : "auto"} />
-        </View>
-
+      <StatusBar style={Platform.OS === "ios" ? "dark" : "auto"} />
+    </>
   );
 }
+
+const tabs = [
+  { name: "index", title: "Home", icon: "home" },
+  { name: "my-stories", title: "My Stories", icon: "folder1" },
+  {
+    name: "add-story",
+    title: "Add Story",
+    icon: "pluscircleo",
+    href: "stories/create",
+    size: 42,
+    tabBarIconStyle: {
+      position: "absolute",
+      bottom: 0,
+      height: 60,
+      width: 60,
+      borderRadius: 60,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "white",
+    },
+  },
+  { name: "leaderboard", title: "Leaderboard", icon: "flag" },
+  { name: "profile", title: "Profile", icon: "user" },
+];

@@ -1,35 +1,59 @@
-import React from "react";
-import {Pressable, ScrollView, StyleSheet} from "react-native";
-import StyledText from "./styled-text";
+import React, { useEffect } from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
 import styleVariables from "../constants/styleVariables";
 import useUserStore from "../stores/useUserStore";
+import { useRootNavigationState, useRouter } from "expo-router";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const PageWrapper = ({ children}) => {
+const PageWrapper = ({ children }) => {
+  const insets = useSafeAreaInsets();
 
-    const userReady = useUserStore((state) => state.userReady);
-    const isLoggedIn = useUserStore((state) => state.isLoggedIn);
+  const userReady = useUserStore((state) => state.userReady);
+  const isLoggedIn = useUserStore((state) => state.isLoggedIn);
 
-    if (!userReady || !isLoggedIn) return null;
+  const rootNavigationState = useRootNavigationState();
 
-    return (
-        <ScrollView>
-            {children}
-        </ScrollView>
-    );
+  const router = useRouter();
+
+  const navigatorReady = rootNavigationState?.key != null;
+
+  useEffect(() => {
+    if (!userReady) return;
+
+    if (!isLoggedIn && navigatorReady) {
+      router.push("/auth/register");
+    }
+  }, [isLoggedIn, userReady, navigatorReady]);
+
+  if (!userReady || !isLoggedIn) return null;
+
+  return (
+    <View
+      style={{
+        backgroundColor: "white",
+        flex: 1,
+        paddingLeft: insets.left,
+        paddingRight: insets.right,
+        paddingBottom: insets.bottom,
+      }}
+    >
+      <ScrollView>{children}</ScrollView>
+    </View>
+  );
 };
 
 export default PageWrapper;
 
 const styles = StyleSheet.create({
-    text: {
-        color: "white",
-        fontFamily: styleVariables.fonts.medium,
-        fontSize: 16,
-    },
-    button: {
-        backgroundColor: styleVariables.colors.primary,
-        paddingHorizontal: 10,
-        paddingVertical: 8,
-        borderRadius: 4,
-    },
+  text: {
+    color: "white",
+    fontFamily: styleVariables.fonts.medium,
+    fontSize: 16,
+  },
+  button: {
+    backgroundColor: styleVariables.colors.primary,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderRadius: 4,
+  },
 });

@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "Quiz App",
-    "slug": "quiz-app",
+    "name": "Travel Buddy",
+    "slug": "travel-buddy",
     "version": "1.0.0",
-    "scheme": "com.quiz.app",
+    "scheme": "com.travel.buddy.app",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -23,7 +23,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.quiz.app"
+      "package": "com.travel.buddy.app"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -36,7 +36,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "2adc3eb6-c914-4311-bf5d-a96b6a960439"
+        "projectId": "a6768797-2d96-42ba-a638-a2fa7785447f"
       }
     }
   }

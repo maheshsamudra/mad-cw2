@@ -1,42 +1,41 @@
-import {Slot, Tabs, useRouter} from "expo-router";
-import { AntDesign } from "@expo/vector-icons";
+import { Slot, useRouter } from "expo-router";
 
-import React from "react";
+import React, { useEffect } from "react";
 import styleVariables from "../../constants/styleVariables";
-import {Platform, ScrollView, StatusBar, View} from "react-native";
-import {useSafeAreaInsets} from "react-native-safe-area-context";
+import { Platform, ScrollView, StatusBar, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import useUserStore from "../../stores/useUserStore";
+import useGuestPage from "../../hooks/useGuestPage";
 
 export default function AuthLayout() {
+  const insets = useSafeAreaInsets();
 
-    const insets = useSafeAreaInsets();
+  useGuestPage();
 
+  return (
+    <View
+      style={{
+        backgroundColor: "white",
+        flex: 1,
+        paddingTop: insets.top + 50,
+        paddingLeft: insets.left,
+        paddingRight: insets.right,
+        paddingBottom: insets.bottom,
+      }}
+    >
+      <View
+        contentContainerStyle={{ flexGrow: 1 }}
+        style={{
+          paddingTop: styleVariables.gap,
+          backgroundColor: "white",
+          flex: 1,
+          paddingHorizontal: styleVariables.gap,
+        }}
+      >
+        <Slot />
+      </View>
 
-    return (
-        <View
-            style={{
-                backgroundColor: "white",
-                flex: 1,
-                paddingTop: insets.top,
-                paddingLeft: insets.left,
-                paddingRight: insets.right,
-                paddingBottom: insets.bottom,
-            }}
-        >
-                <ScrollView
-                    contentContainerStyle={{ flexGrow: 1 }}
-                    style={{
-                        paddingTop: styleVariables.gap,
-                        backgroundColor: "white",
-                        flex: 1,
-                        paddingHorizontal: styleVariables.gap,
-                    }}
-                >
-                    <Slot />
-                </ScrollView>
-
-            <StatusBar style={Platform.OS === "ios" ? "dark" : "auto"} />
-        </View>
-    );
+      <StatusBar style={Platform.OS === "ios" ? "dark" : "auto"} />
+    </View>
+  );
 }
-
-

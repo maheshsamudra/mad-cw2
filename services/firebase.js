@@ -1,7 +1,7 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 // import { initializeAuth } from "firebase/auth";
 
-import { getReactNativePersistence, initializeAuth } from "firebase/auth";
+import { getReactNativePersistence, initializeAuth ,sendPasswordResetEmail, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, signOut} from "firebase/auth";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -28,3 +28,47 @@ export const firebaseAuth = initializeAuth(app, {
 export default app;
 
 export const firestoreDb = getFirestore();
+
+
+export const register = async (email, password, displayName) => {
+  return await createUserWithEmailAndPassword(firebaseAuth, email, password)
+      .then(async (userCredential) => {
+        updateProfile(userCredential.user, {
+          displayName,
+        })
+            .then(() => null)
+            .catch(() => null);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        let errorMessage = error.message;
+        if (errorCode === "auth/email-already-in-use") {
+          errorMessage = "Email is already used. Please try a different email.";
+        }
+        return { errorCode, errorMessage };
+      });
+};
+
+export const login = async (email, password) => {
+  return await signInWithEmailAndPassword(firebaseAuth, email, password)
+      .then((userCredential) => {
+        return true;
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = "Invalid credentials. Please try again.";
+        return {
+          errorCode,
+          errorMessage,
+        };
+      });
+}
+
+export const handleLogout = async () => {
+    await signOut(firebaseAuth)
+}
+
+export const sendPwResetEmail = async (email) =>
+    sendPasswordResetEmail(firebaseAuth, email)
+        .then(() => true)
+        .catch(() => false);

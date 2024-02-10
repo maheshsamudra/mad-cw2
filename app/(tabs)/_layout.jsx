@@ -1,10 +1,9 @@
-import { Tabs, usePathname } from "expo-router";
+import { Tabs } from "expo-router";
 import { AntDesign } from "@expo/vector-icons";
 
 import React from "react";
 import styleVariables from "../../constants/styleVariables";
 import { Platform, StatusBar, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function TabLayout() {
   return (
@@ -17,8 +16,8 @@ export default function TabLayout() {
           },
           tabBarStyle: {
             paddingTop: 4,
-            paddingBottom: 8,
-            height: 56,
+            paddingBottom: Platform.OS === "ios" ? 20 : 8,
+            height: Platform.OS === "ios" ? 70 : 56,
           },
           tabBarLabelStyle: {
             fontFamily: styleVariables.fonts.regular,
@@ -63,14 +62,13 @@ const tabs = [
     name: "add-story",
     title: "Add Story",
     icon: "pluscircleo",
-    href: "stories/create",
     size: 42,
     tabBarIconStyle: {
       position: "absolute",
-      bottom: 0,
-      height: 60,
-      width: 60,
-      borderRadius: 60,
+      bottom: 6,
+      height: 42,
+      width: 42,
+      borderRadius: 42,
       justifyContent: "center",
       alignItems: "center",
       backgroundColor: "white",

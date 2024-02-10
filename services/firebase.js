@@ -19,6 +19,7 @@ import {
   orderBy,
   getDoc,
   doc,
+  deleteDoc,
 } from "firebase/firestore";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -128,8 +129,16 @@ export const getStory = async (id) => {
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
-    return docSnap.data();
+    return {
+      ...docSnap.data(),
+      id: docSnap.id,
+    };
   } else {
     return null;
   }
+};
+
+export const deleteStory = async (id) => {
+  await deleteDoc(doc(db, "stories", id));
+  return true;
 };

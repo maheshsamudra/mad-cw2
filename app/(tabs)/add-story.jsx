@@ -32,8 +32,8 @@ export default function AddStory() {
     setProgress(true);
     const res = await saveStory(story);
     setProgress(false);
-    setStory({});
-    router.push("/my-stories");
+    // setStory({});
+    // router.push("/my-stories");
   };
 
   return (

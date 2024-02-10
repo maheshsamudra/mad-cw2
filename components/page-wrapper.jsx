@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ActivityIndicator, ScrollView, StyleSheet, View } from "react-native";
 import styleVariables from "../constants/styleVariables";
 import useUserStore from "../stores/useUserStore";
 import { useRootNavigationState, useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const PageWrapper = ({ children }) => {
+const PageWrapper = ({ children, isLoading }) => {
   const insets = useSafeAreaInsets();
 
   const userReady = useUserStore((state) => state.userReady);
@@ -37,7 +37,16 @@ const PageWrapper = ({ children }) => {
         paddingBottom: insets.bottom,
       }}
     >
-      <ScrollView>{children}</ScrollView>
+      <ScrollView>
+        <View
+          style={{
+            marginHorizontal: styleVariables.gap,
+            marginTop: styleVariables.gap,
+          }}
+        >
+          {!isLoading ? children : <ActivityIndicator />}
+        </View>
+      </ScrollView>
     </View>
   );
 };

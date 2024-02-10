@@ -1,5 +1,11 @@
 import React from "react";
-import { StyleSheet, TextInput, View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  TextInput,
+  View,
+} from "react-native";
 import styleVariables from "../constants/styleVariables";
 import StyledText from "./styled-text";
 
@@ -9,18 +15,21 @@ const StyledInput = ({
   setValue,
   placeholder,
   isPassword = false,
+  multiline = false,
   ...props
 }) => {
   return (
     <View style={styles.wrapper}>
       {label && <StyledText style={{ marginBottom: 4 }}>{label}</StyledText>}
       <TextInput
-        {...props}
-        style={styles.input}
+        editable
+        style={[styles.input, multiline ? styles.textarea : {}]}
         placeholder={placeholder}
         value={value}
         onChangeText={setValue}
         secureTextEntry={isPassword}
+        multiline={multiline}
+        {...props}
       />
     </View>
   );
@@ -39,4 +48,5 @@ const styles = StyleSheet.create({
     fontFamily: styleVariables.fonts.regular,
     fontSize: 16,
   },
+  textarea: { minHeight: 200, maxHeight: 400 },
 });

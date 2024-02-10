@@ -7,6 +7,7 @@ const StyledButton = ({
   title = "Submit",
   onPress = () => null,
   progress = false,
+  style = {},
 }) => {
   return (
     <Pressable
@@ -14,7 +15,7 @@ const StyledButton = ({
         if (progress) return;
         onPress();
       }}
-      style={[styles.button, progress ? styles.progress : {}]}
+      style={[styles.button, progress ? styles.progress : {}, style]}
     >
       <StyledText style={styles.text}>{title}</StyledText>
     </Pressable>

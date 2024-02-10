@@ -52,6 +52,14 @@ const styles = StyleSheet.create({
       color: "green",
       marginVertical: 8,
     },
+    storyTitle: {
+      fontSize: 16,
+      fontFamily: styleVariables.fonts.bold,
+    },
+    metadata: {
+      color: "#888",
+      fontSize: 14,
+    },
   },
   center: { textAlign: "center" },
 });

@@ -7,8 +7,6 @@ import { Platform, StatusBar, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function TabLayout() {
-  const insets = useSafeAreaInsets();
-
   return (
     <>
       <Tabs
@@ -19,6 +17,8 @@ export default function TabLayout() {
           },
           tabBarStyle: {
             paddingTop: 4,
+            paddingBottom: 8,
+            height: 56,
           },
           tabBarLabelStyle: {
             fontFamily: styleVariables.fonts.regular,

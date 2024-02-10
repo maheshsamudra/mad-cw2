@@ -6,57 +6,42 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { handleLogout } from "../../services/firebase";
 import PageWrapper from "../../components/page-wrapper";
 import useMyStories from "../../hooks/useMyStories";
 import StyledText from "../../components/styled-text";
-import styleVariables from "../../constants/styleVariables";
-import { format } from "date-fns";
-import { useRouter } from "expo-router";
+import StoryBlock from "../../components/story-block";
+import { useState } from "react";
 
 export default function MyStories() {
-  const { data, isLoading } = useMyStories();
+  const [refresh, setRefresh] = useState(0);
+  const { data, isLoading } = useMyStories(refresh);
 
   return (
-    <PageWrapper isLoading={isLoading && !data?.length}>
-      {!data?.length ? <NoStories /> : <Stories data={data} />}
+    <PageWrapper isLoading={isLoading && !data?.length} hasTabs>
+      {!data?.length ? (
+        <NoStories />
+      ) : (
+        <Stories data={data} updateList={() => setRefresh(refresh + 1)} />
+      )}
     </PageWrapper>
   );
 }
-
-const styles = StyleSheet.create({
-  margin: { marginTop: 10 },
-});
 
 const NoStories = () => {
   return <StyledText>No stories available</StyledText>;
 };
 
-const Stories = ({ data }) => {
-  const router = useRouter();
+const Stories = ({ data, updateList }) => {
   return (
     <View>
       {data.map((story) => {
         return (
-          <TouchableOpacity
-            onPress={() =>
-              router.push({
-                pathname: "stories/view",
-                params: { id: story.id, title: story.title },
-              })
-            }
+          <StoryBlock
+            story={story}
             key={story.id}
-            style={{ marginBottom: styleVariables.gap }}
-          >
-            <StyledText variant={"storyTitle"}>{story.title}</StyledText>
-            <StyledText variant={"metadata"}>
-              {story.city} -{" "}
-              {format(
-                new Date(story.createdAt.seconds * 1000),
-                "do MMM, yyyy hh:mm",
-              )}
-            </StyledText>
-          </TouchableOpacity>
+            updateList={updateList}
+            withActions
+          />
         );
       })}
     </View>

@@ -1,23 +1,24 @@
-import { KeyboardAvoidingView, StyleSheet } from "react-native";
+import {
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { saveStory } from "../../services/firebase";
 import PageWrapper from "../../components/page-wrapper";
-import { useState } from "react";
+import React, { useState } from "react";
 import StyledInput from "../../components/styled-input";
 import StyledButton from "../../components/styled-button";
-import { useRouter } from "expo-router";
+import { Tabs, useRouter } from "expo-router";
+import { AntDesign } from "@expo/vector-icons";
+import StyledText from "../../components/styled-text";
+import styleVariables from "../../constants/styleVariables";
 
 export default function AddStory() {
   const [progress, setProgress] = useState(false);
 
-  const [story, setStory] = useState({
-    title: "Title",
-    city: "Colombo",
-    intro: "Intro",
-    loved: "Loved",
-    improvements: "Improvements",
-    details: "Details",
-    googleMapLink: "https://google.com",
-  });
+  const [story, setStory] = useState({});
 
   const router = useRouter();
 
@@ -32,13 +33,30 @@ export default function AddStory() {
     setProgress(true);
     const res = await saveStory(story);
     setProgress(false);
-    // setStory({});
-    // router.push("/my-stories");
+    setStory({});
+    router.push("/my-stories");
   };
 
   return (
-    <PageWrapper>
-      <KeyboardAvoidingView style={{ flex: 1 }}>
+    <PageWrapper hasTabs>
+      <Tabs.Screen
+        options={{
+          headerRight: () => {
+            return (
+              <View style={styles.headerAction}>
+                {progress ? (
+                  <ActivityIndicator />
+                ) : (
+                  <TouchableOpacity onPress={handleSave}>
+                    <StyledText variant={"success"}>Save</StyledText>
+                  </TouchableOpacity>
+                )}
+              </View>
+            );
+          },
+        }}
+      />
+      <KeyboardAvoidingView style={styles.keyboardAvoidingView}>
         <StyledInput
           value={story?.title}
           setValue={(value) => handleValue("title", value)}
@@ -85,13 +103,6 @@ export default function AddStory() {
           label={"Google Map Link"}
           inputMode={"url"}
         />
-
-        <StyledButton
-          title={"Save"}
-          onPress={handleSave}
-          style={{ marginBottom: 48 }}
-          progress={progress}
-        />
       </KeyboardAvoidingView>
     </PageWrapper>
   );
@@ -99,4 +110,8 @@ export default function AddStory() {
 
 const styles = StyleSheet.create({
   margin: { marginTop: 10 },
+  headerAction: {
+    marginRight: styleVariables.gap,
+  },
+  keyboardAvoidingView: { flex: 1, paddingBottom: 40 },
 });

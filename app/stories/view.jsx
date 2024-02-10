@@ -13,12 +13,16 @@ import useStory from "../../hooks/useStory";
 import useUserStore from "../../stores/useUserStore";
 import { format } from "date-fns";
 import StyledButton from "../../components/styled-button";
+import { AntDesign } from "@expo/vector-icons";
+import styleVariables from "../../constants/styleVariables";
 
 export default function ViewStory() {
   const params = useLocalSearchParams();
   const router = useRouter();
 
   const user = useUserStore((state) => state.user);
+
+  const { data, isLoading } = useStory(params.id);
 
   const handleDelete = () => {
     Alert.alert(
@@ -42,8 +46,6 @@ export default function ViewStory() {
     );
   };
 
-  const { data, isLoading } = useStory(params.id);
-
   return (
     <PageWrapper>
       <Stack.Screen
@@ -54,7 +56,11 @@ export default function ViewStory() {
             if (isLoading || data?.userId !== user?.uid) return null;
             return (
               <TouchableOpacity onPress={handleDelete}>
-                <StyledText variant={"error"}>Delete</StyledText>
+                <AntDesign
+                  name="delete"
+                  size={20}
+                  color={styleVariables.colors.red}
+                />
               </TouchableOpacity>
             );
           },

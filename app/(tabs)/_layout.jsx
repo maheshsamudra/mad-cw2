@@ -1,11 +1,25 @@
-import { Tabs } from "expo-router";
+import { Tabs, usePathname, useRouter } from "expo-router";
 import { AntDesign } from "@expo/vector-icons";
 
 import React from "react";
 import styleVariables from "../../constants/styleVariables";
-import { Platform, StatusBar, View } from "react-native";
+import {
+  Platform,
+  StatusBar,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import StyledText from "../../components/styled-text";
+import useUserStore from "../../stores/useUserStore";
+import cities from "../../constants/cities";
 
 export default function TabLayout() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const userCity = useUserStore((state) => state.userCity);
+
+  const isFilterActive = userCity !== cities[0];
   return (
     <>
       <Tabs
@@ -22,6 +36,23 @@ export default function TabLayout() {
           tabBarLabelStyle: {
             fontFamily: styleVariables.fonts.regular,
             fontSize: 12,
+          },
+          headerRight: () => {
+            if (pathname !== "/") return null;
+            return (
+              <TouchableOpacity
+                onPress={() => router.push("/search")}
+                style={styles.filter}
+              >
+                <AntDesign
+                  name="filter"
+                  size={24}
+                  color={
+                    isFilterActive ? styleVariables.colors.primary : "black"
+                  }
+                />
+              </TouchableOpacity>
+            );
           },
         }}
       >
@@ -77,3 +108,9 @@ const tabs = [
   { name: "leaderboard", title: "Leaderboard", icon: "flag" },
   { name: "profile", title: "Profile", icon: "user" },
 ];
+
+const styles = StyleSheet.create({
+  filter: {
+    marginRight: styleVariables.gap,
+  },
+});

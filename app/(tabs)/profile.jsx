@@ -4,7 +4,7 @@ import PageWrapper from "../../components/page-wrapper";
 
 export default function Profile() {
   return (
-    <PageWrapper>
+    <PageWrapper hasTabs>
       <Button title={"Logout"} onPress={handleLogout} />
     </PageWrapper>
   );

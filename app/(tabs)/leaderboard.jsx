@@ -3,7 +3,7 @@ import { handleLogout } from "../../services/firebase";
 import PageWrapper from "../../components/page-wrapper";
 
 export default function Leaderboard() {
-  return <PageWrapper></PageWrapper>;
+  return <PageWrapper hasTabs></PageWrapper>;
 }
 
 const styles = StyleSheet.create({

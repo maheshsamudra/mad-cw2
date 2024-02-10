@@ -5,7 +5,7 @@ import useUserStore from "../stores/useUserStore";
 import { useRootNavigationState, useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const PageWrapper = ({ children, isLoading }) => {
+const PageWrapper = ({ children, isLoading, hasTabs }) => {
   const insets = useSafeAreaInsets();
 
   const userReady = useUserStore((state) => state.userReady);
@@ -34,7 +34,7 @@ const PageWrapper = ({ children, isLoading }) => {
         flex: 1,
         paddingLeft: insets.left,
         paddingRight: insets.right,
-        paddingBottom: insets.bottom,
+        paddingBottom: hasTabs ? 0 : insets.bottom,
       }}
     >
       <ScrollView>

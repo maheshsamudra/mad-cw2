@@ -20,11 +20,14 @@ import {
   getDoc,
   doc,
   deleteDoc,
+  limit,
+  updateDoc,
 } from "firebase/firestore";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { getFirestore } from "firebase/firestore";
+import cities from "../constants/cities";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB1ZbSz0QGxPidrTaMYHFscDXnY2gvSteo",
@@ -101,6 +104,18 @@ export const saveStory = async (data) => {
   return docRef.id;
 };
 
+export const updateStory = async (data) => {
+  const id = data.id;
+  delete data.id;
+
+  await updateDoc(doc(db, "stories", id), {
+    ...data,
+    userId: firebaseAuth.currentUser.uid,
+  });
+
+  return true;
+};
+
 export const getMyStories = async () => {
   const myStories = [];
 
@@ -121,6 +136,36 @@ export const getMyStories = async () => {
   });
 
   return myStories;
+};
+
+export const getAllStories = async (userCity) => {
+  const allStories = [];
+
+  const q =
+    userCity === cities[0]
+      ? query(
+          collection(db, "stories"),
+          orderBy("createdAt", "desc"),
+          limit(100),
+        )
+      : query(
+          collection(db, "stories"),
+          orderBy("createdAt", "desc"),
+          where("city", "==", userCity),
+          limit(100),
+        );
+
+  const querySnapshot = await getDocs(q);
+
+  querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+    allStories.push({
+      ...doc.data(),
+      id: doc.id,
+    });
+  });
+
+  return allStories;
 };
 
 export const getStory = async (id) => {

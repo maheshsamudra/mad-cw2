@@ -1,23 +1,23 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useFocusEffect } from "expo-router";
-import { getMyStories } from "../services/firebase";
+import { getAllStories, getMyStories } from "../services/firebase";
 
-const useMyStories = (refresh = 0) => {
+const useAllStories = (userCity = "") => {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
 
   useFocusEffect(
     useCallback(() => {
       setIsLoading(true);
-      getMyStories()
+      getAllStories(userCity)
         .then((res) => {
           setData(res);
         })
         .finally(() => setIsLoading(false));
-    }, [refresh]),
+    }, [userCity]),
   );
 
   return { data, isLoading };
 };
 
-export default useMyStories;
+export default useAllStories;

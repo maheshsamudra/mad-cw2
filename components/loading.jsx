@@ -12,5 +12,5 @@ const Loading = () => {
 export default Loading;
 
 const styles = StyleSheet.create({
-  wrapper: { marginTop: 19 },
+  wrapper: { marginTop: 20 },
 });

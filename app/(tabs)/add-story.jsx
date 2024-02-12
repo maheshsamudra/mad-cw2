@@ -17,6 +17,7 @@ import styleVariables from "../../constants/styleVariables";
 
 export default function AddStory() {
   const [progress, setProgress] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [story, setStory] = useState({});
 
@@ -30,7 +31,23 @@ export default function AddStory() {
   };
 
   const handleSave = async () => {
+    setErrorMessage("");
+
+    const isValid =
+      story.title &&
+      story.city &&
+      story.intro &&
+      story.loved &&
+      story.details &&
+      story.improvements &&
+      story.googleMapLink;
+
+    if (!isValid) {
+      setErrorMessage("All the fields are required!");
+      return;
+    }
     setProgress(true);
+
     const res = await saveStory(story);
     setProgress(false);
     setStory({});
@@ -41,6 +58,12 @@ export default function AddStory() {
     <PageWrapper hasTabs>
       <Tabs.Screen
         options={{
+          headerTitle: errorMessage || "Add Story",
+          headerTitleStyle: {
+            color: errorMessage ? "red" : "black",
+            fontFamily: styleVariables.fonts.semiBold,
+            fontSize: errorMessage ? 14 : 17,
+          },
           headerRight: () => {
             return (
               <View style={styles.headerAction}>

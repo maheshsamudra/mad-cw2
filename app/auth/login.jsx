@@ -31,7 +31,12 @@ const Login = () => {
         <StyledText center>Create your account to get started!</StyledText>
       </View>
 
-      <StyledInput label={"Email Address"} value={email} setValue={setEmail} />
+      <StyledInput
+        label={"Email Address"}
+        autoCapitalize={"none"}
+        value={email}
+        setValue={setEmail}
+      />
       <StyledInput
         label={"Password"}
         value={password}

@@ -8,6 +8,9 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
   signOut,
+  sendEmailVerification,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
 } from "firebase/auth";
 
 import {
@@ -54,11 +57,12 @@ export const db = getFirestore(app);
 export const register = async (email, password, displayName) => {
   return await createUserWithEmailAndPassword(firebaseAuth, email, password)
     .then(async (userCredential) => {
-      updateProfile(userCredential.user, {
+      await updateProfile(userCredential.user, {
         displayName,
       })
         .then(() => null)
         .catch(() => null);
+      await resendVerificationEmail();
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -87,6 +91,11 @@ export const login = async (email, password) => {
 
 export const handleLogout = async () => {
   await signOut(firebaseAuth);
+};
+
+export const resendVerificationEmail = async () => {
+  await sendEmailVerification(firebaseAuth.currentUser);
+  return true;
 };
 
 export const requestPwReset = async () => {

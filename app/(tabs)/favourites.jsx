@@ -6,8 +6,6 @@ import useFavouriteStories from "../../hooks/useFavouriteStories";
 import StoryBlock from "../../components/story-block";
 
 export default function FavouriteStories() {
-  const router = useRouter();
-
   const { data, isLoading } = useFavouriteStories();
 
   return (

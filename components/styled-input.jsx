@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  KeyboardAvoidingView,
-  Platform,
-  StyleSheet,
-  TextInput,
-  View,
-} from "react-native";
+import { StyleSheet, TextInput, View } from "react-native";
 import styleVariables from "../constants/styleVariables";
 import StyledText from "./styled-text";
 
@@ -16,6 +10,7 @@ const StyledInput = ({
   placeholder,
   isPassword = false,
   multiline = false,
+  autoCapitalize = "sentences",
   style = {},
   ...props
 }) => {
@@ -30,6 +25,7 @@ const StyledInput = ({
         onChangeText={setValue}
         secureTextEntry={isPassword}
         multiline={multiline}
+        autoCapitalize={autoCapitalize}
         {...props}
       />
     </View>

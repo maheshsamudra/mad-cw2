@@ -31,7 +31,12 @@ const ResetPassword = () => {
         </StyledText>
       </View>
 
-      <StyledInput label={"Email Address"} value={email} setValue={setEmail} />
+      <StyledInput
+        label={"Email Address"}
+        autoCapitalize={"none"}
+        value={email}
+        setValue={setEmail}
+      />
 
       <StyledButton
         title={"Reset"}

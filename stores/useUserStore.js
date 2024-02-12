@@ -11,7 +11,7 @@ const useUserStore = create((set) => ({
     set(() => {
       return {
         user,
-        isLoggedIn: !!user?.uid,
+        isLoggedIn: !!user?.uid && !!user?.emailVerified,
         userReady: true,
       };
     }),

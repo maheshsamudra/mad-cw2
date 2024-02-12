@@ -13,11 +13,13 @@ import StyledInput from "../../components/styled-input";
 import StyledButton from "../../components/styled-button";
 import { useEffect, useState } from "react";
 import StyledText from "../../components/styled-text";
+import styleVariables from "../../constants/styleVariables";
 
 export default function UpdateStory() {
   const params = useLocalSearchParams();
   const router = useRouter();
   const [progress, setProgress] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const { data, isLoading } = useStory(params.id);
 
@@ -36,6 +38,22 @@ export default function UpdateStory() {
   };
 
   const handleUpdate = async () => {
+    setErrorMessage("");
+
+    const isValid =
+      story.title &&
+      story.city &&
+      story.intro &&
+      story.loved &&
+      story.details &&
+      story.improvements &&
+      story.googleMapLink;
+
+    if (!isValid) {
+      setErrorMessage("All the fields are required!");
+      return;
+    }
+
     setProgress(true);
     const res = await updateStory(story);
     setProgress(false);
@@ -48,7 +66,12 @@ export default function UpdateStory() {
       <Stack.Screen
         options={{
           headerShown: true,
-          title: "Update Story",
+          headerTitle: errorMessage || "Update Story",
+          headerTitleStyle: {
+            color: errorMessage ? "red" : "black",
+            fontFamily: styleVariables.fonts.semiBold,
+            fontSize: errorMessage ? 14 : 17,
+          },
           headerRight: () => {
             if (progress || isLoading) {
               return <ActivityIndicator />;

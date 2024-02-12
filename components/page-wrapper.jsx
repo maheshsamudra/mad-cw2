@@ -1,11 +1,25 @@
 import React, { useEffect } from "react";
-import { ActivityIndicator, ScrollView, StyleSheet, View } from "react-native";
+import {
+  ActivityIndicator,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import styleVariables from "../constants/styleVariables";
 import useUserStore from "../stores/useUserStore";
 import { useRootNavigationState, useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import StyledText from "./styled-text";
+import { firebaseAuth, resendVerificationEmail } from "../services/firebase";
 
-const PageWrapper = ({ children, isLoading, hasTabs }) => {
+const PageWrapper = ({
+  children,
+  isLoading,
+  hasTabs,
+  refreshControl = null,
+}) => {
   const insets = useSafeAreaInsets();
 
   const userReady = useUserStore((state) => state.userReady);
@@ -37,7 +51,18 @@ const PageWrapper = ({ children, isLoading, hasTabs }) => {
         paddingBottom: hasTabs ? 0 : insets.bottom,
       }}
     >
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          refreshControl ? (
+            <RefreshControl
+              refreshing={refreshControl.refreshing}
+              onRefresh={refreshControl.onRefresh}
+            />
+          ) : (
+            <></>
+          )
+        }
+      >
         <View
           style={{
             marginHorizontal: styleVariables.gap,

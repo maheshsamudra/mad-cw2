@@ -1,7 +1,7 @@
 import { Tabs, usePathname, useRouter } from "expo-router";
 import { AntDesign } from "@expo/vector-icons";
 
-import React from "react";
+import React, { useEffect } from "react";
 import styleVariables from "../../constants/styleVariables";
 import {
   Platform,
@@ -10,14 +10,24 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import StyledText from "../../components/styled-text";
 import useUserStore from "../../stores/useUserStore";
 import cities from "../../constants/cities";
+import useMyStories from "../../hooks/useMyStories";
 
 export default function TabLayout() {
   const router = useRouter();
   const pathname = usePathname();
   const userCity = useUserStore((state) => state.userCity);
+
+  const { data, isLoading } = useMyStories();
+
+  const setRewardPoints = useUserStore((state) => state.setRewardPoints);
+
+  useEffect(() => {
+    if (isLoading) return;
+
+    setRewardPoints(data?.length);
+  }, [data, isLoading]);
 
   const isFilterActive = userCity !== cities[0];
   return (

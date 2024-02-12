@@ -16,6 +16,7 @@ const StyledInput = ({
   placeholder,
   isPassword = false,
   multiline = false,
+  style = {},
   ...props
 }) => {
   return (
@@ -23,7 +24,7 @@ const StyledInput = ({
       {label && <StyledText style={{ marginBottom: 4 }}>{label}</StyledText>}
       <TextInput
         editable
-        style={[styles.input, multiline ? styles.textarea : {}]}
+        style={[styles.input, multiline ? styles.textarea : {}, style]}
         placeholder={placeholder}
         value={value}
         onChangeText={setValue}

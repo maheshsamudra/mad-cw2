@@ -105,7 +105,7 @@ const tabs = [
       backgroundColor: "white",
     },
   },
-  { name: "leaderboard", title: "Leaderboard", icon: "flag" },
+  { name: "favourites", title: "Favourites", icon: "heart" },
   { name: "profile", title: "Profile", icon: "user" },
 ];
 

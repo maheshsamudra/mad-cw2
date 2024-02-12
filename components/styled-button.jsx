@@ -27,7 +27,7 @@ export default StyledButton;
 const styles = StyleSheet.create({
   text: {
     color: "white",
-    fontFamily: styleVariables.fonts.medium,
+    fontFamily: styleVariables.fonts.semiBold,
     fontSize: 16,
     textAlign: "center",
   },

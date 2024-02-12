@@ -44,6 +44,9 @@ const styles = StyleSheet.create({
       fontFamily: styleVariables.fonts.bold,
       marginBottom: 6,
     },
+    button: {
+      textDecorationLine: "underline",
+    },
     error: {
       color: "red",
       marginVertical: 8,
@@ -61,5 +64,6 @@ const styles = StyleSheet.create({
       fontSize: 14,
     },
   },
+  muted: { opacity: 0.6 },
   center: { textAlign: "center" },
 });

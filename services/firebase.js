@@ -89,6 +89,19 @@ export const handleLogout = async () => {
   await signOut(firebaseAuth);
 };
 
+export const requestPwReset = async () => {
+  return await sendPasswordResetEmail(
+    firebaseAuth,
+    firebaseAuth.currentUser.email,
+  )
+    .then(() => {
+      return true;
+    })
+    .catch((error) => {
+      return false;
+    });
+};
+
 export const sendPwResetEmail = async (email) =>
   sendPasswordResetEmail(firebaseAuth, email)
     .then(() => true)

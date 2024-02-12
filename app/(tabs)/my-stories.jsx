@@ -1,7 +1,5 @@
 import {
-  Button,
-  Pressable,
-  ScrollView,
+  ActivityIndicator,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -10,11 +8,17 @@ import PageWrapper from "../../components/page-wrapper";
 import useMyStories from "../../hooks/useMyStories";
 import StyledText from "../../components/styled-text";
 import StoryBlock from "../../components/story-block";
-import { useState } from "react";
+import React, { useState } from "react";
+import StyledButton from "../../components/styled-button";
+import { Tabs, useRouter } from "expo-router";
+import styleVariables from "../../constants/styleVariables";
+import { AntDesign } from "@expo/vector-icons";
 
 export default function MyStories() {
   const [refresh, setRefresh] = useState(0);
   const { data, isLoading } = useMyStories(refresh);
+
+  const router = useRouter();
 
   return (
     <PageWrapper isLoading={isLoading && !data?.length} hasTabs>
@@ -28,7 +32,22 @@ export default function MyStories() {
 }
 
 const NoStories = () => {
-  return <StyledText>No stories available</StyledText>;
+  const router = useRouter();
+  return (
+    <View>
+      <StyledText>
+        You haven't created any stories yet. Start creating stories to earn
+        points to redeem when you are exploring!
+      </StyledText>
+
+      <StyledText />
+
+      <StyledButton
+        title={"Start Creating Now"}
+        onPress={() => router.push("/add-story")}
+      />
+    </View>
+  );
 };
 
 const Stories = ({ data, updateList }) => {
@@ -47,3 +66,9 @@ const Stories = ({ data, updateList }) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  headerAction: {
+    marginRight: styleVariables.gap,
+  },
+});

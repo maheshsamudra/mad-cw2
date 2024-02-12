@@ -9,7 +9,7 @@ export default function Home() {
   const { data, isLoading } = useAllStories(userCity);
 
   return (
-    <PageWrapper isLoading={isLoading} hasTabs>
+    <PageWrapper isLoading={isLoading && !data?.length} hasTabs>
       {data.map((story) => {
         return <StoryBlock story={story} key={story.id} />;
       })}

@@ -15,6 +15,8 @@ import { format } from "date-fns";
 import StyledButton from "../../components/styled-button";
 import { AntDesign } from "@expo/vector-icons";
 import styleVariables from "../../constants/styleVariables";
+import { checkIfSaved, toggleFavourite } from "../../utils/favourite-stories";
+import { useEffect, useState } from "react";
 
 export default function ViewStory() {
   const params = useLocalSearchParams();
@@ -46,6 +48,14 @@ export default function ViewStory() {
     );
   };
 
+  const myStory = data?.userId === user?.uid;
+
+  const [favourite, setFavourite] = useState(false);
+
+  useEffect(() => {
+    checkIfSaved(params.id).then((res) => setFavourite(res));
+  }, []);
+
   return (
     <PageWrapper>
       <Stack.Screen
@@ -53,7 +63,20 @@ export default function ViewStory() {
           headerShown: true,
           title: params.title || data?.title || "View Story",
           headerRight: () => {
-            if (isLoading || data?.userId !== user?.uid) return null;
+            if (isLoading) return null;
+            if (!myStory) {
+              return (
+                <TouchableOpacity
+                  onPress={() => toggleFavourite(data, setFavourite)}
+                >
+                  <AntDesign
+                    name={favourite ? "heart" : "hearto"}
+                    size={20}
+                    color={favourite ? styleVariables.colors.primary : "black"}
+                  />
+                </TouchableOpacity>
+              );
+            }
             return (
               <TouchableOpacity onPress={handleDelete}>
                 <AntDesign

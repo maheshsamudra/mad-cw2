@@ -95,7 +95,8 @@ export default function UpdateStory() {
           <StyledInput
             value={story?.city}
             setValue={(value) => handleValue("city", value)}
-            label={"City"}
+            label={"City (Cannot be edited)"}
+            editable={false}
           />
 
           <StyledInput

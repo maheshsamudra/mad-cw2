@@ -1,6 +1,8 @@
 import {
   ActivityIndicator,
   Alert,
+  FlatList,
+  Image,
   Linking,
   StyleSheet,
   TouchableOpacity,
@@ -107,6 +109,30 @@ const Story = ({ data }) => {
         Posted at:{" "}
         {format(new Date(data.createdAt.seconds * 1000), "yyyy-MM-dd")}
       </StyledText>
+
+      {!!data?.images?.length && (
+        <FlatList
+          horizontal
+          pagingEnabled={true}
+          showsHorizontalScrollIndicator={false}
+          legacyImplementation={false}
+          data={data.images}
+          renderItem={({ item, index }) => {
+            return (
+              <Image
+                source={{ uri: item }}
+                key={item}
+                style={{
+                  height: 150,
+                  width: 200,
+                  marginLeft: !index ? 0 : 10,
+                  marginVertical: 10,
+                }}
+              />
+            );
+          }}
+        />
+      )}
 
       <StyledText variant={"storyTitle"} style={styles.storyTitle}>
         Introduction

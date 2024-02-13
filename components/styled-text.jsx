@@ -9,6 +9,7 @@ const StyledText = ({
   style = {},
   center = false,
   ellipsis = false,
+  singleLine = false,
   ...props
 }) => {
   return (
@@ -21,6 +22,7 @@ const StyledText = ({
         center ? styles.center : {},
         style,
       ]}
+      numberOfLines={singleLine ? 1 : null}
       {...props}
     >
       {children}
@@ -58,6 +60,7 @@ const styles = StyleSheet.create({
     storyTitle: {
       fontSize: 16,
       fontFamily: styleVariables.fonts.bold,
+      overflow: "hidden",
     },
     metadata: {
       color: "#888",

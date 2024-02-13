@@ -2,7 +2,7 @@ import React from "react";
 import styleVariables from "../constants/styleVariables";
 import StyledText from "./styled-text";
 import { format } from "date-fns";
-import { Alert, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Alert, Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useRouter } from "expo-router";
 import { AntDesign } from "@expo/vector-icons";
 import { deleteStory, getMyStories } from "../services/firebase";
@@ -55,8 +55,13 @@ const StoryBlock = ({
       key={story.id}
       style={styles.storyWrapper}
     >
-      <View>
-        <StyledText variant={"storyTitle"}>{story.title}</StyledText>
+      {story?.images?.[0] ? (
+        <Image source={{ uri: story?.images?.[0] }} style={styles.image} />
+      ) : null}
+      <View style={styles.text}>
+        <StyledText variant={"storyTitle"} ellipsis singleLine>
+          {story.title}
+        </StyledText>
         <StyledText variant={"metadata"}>
           {story.city} -{" "}
           {format(
@@ -64,35 +69,36 @@ const StoryBlock = ({
             "do MMM, yyyy hh:mm",
           )}
         </StyledText>
+
+        {withActions && isMyStory && (
+          <View style={styles.buttonsWrapper}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() =>
+                router.push({
+                  pathname: "/stories/update",
+                  params: {
+                    id: story.id,
+                  },
+                })
+              }
+            >
+              <AntDesign
+                name="edit"
+                size={20}
+                color={styleVariables.colors.orange}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={handleDelete}>
+              <AntDesign
+                name="delete"
+                size={20}
+                color={styleVariables.colors.red}
+              />
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
-      {withActions && isMyStory && (
-        <View style={styles.buttonsWrapper}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() =>
-              router.push({
-                pathname: "/stories/update",
-                params: {
-                  id: story.id,
-                },
-              })
-            }
-          >
-            <AntDesign
-              name="edit"
-              size={20}
-              color={styleVariables.colors.orange}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={handleDelete}>
-            <AntDesign
-              name="delete"
-              size={20}
-              color={styleVariables.colors.red}
-            />
-          </TouchableOpacity>
-        </View>
-      )}
     </TouchableOpacity>
   );
 };
@@ -103,8 +109,31 @@ const styles = StyleSheet.create({
   storyWrapper: {
     marginBottom: styleVariables.gap,
     flexDirection: "row",
+    alignItems: "center",
     width: "100%",
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 10,
+    overflow: "hidden",
+    paddingRight: 10,
+    flexWrap: "wrap",
   },
-  buttonsWrapper: { flexDirection: "row", marginLeft: "auto" },
-  button: { marginLeft: 4, padding: 8 },
+  text: {
+    paddingLeft: 20,
+    paddingVertical: 20,
+    width: "100%",
+    flex: 1,
+  },
+  buttonsWrapper: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  button: { marginTop: 8, marginRight: 4, padding: 8 },
+  image: {
+    height: "100%",
+    width: 100,
+    marginRight: -10,
+    borderTopLeftRadius: 8,
+    borderBottomLeftRadius: 8,
+  },
 });

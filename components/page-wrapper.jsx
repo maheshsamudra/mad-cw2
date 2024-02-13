@@ -11,8 +11,6 @@ import styleVariables from "../constants/styleVariables";
 import useUserStore from "../stores/useUserStore";
 import { useRootNavigationState, useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import StyledText from "./styled-text";
-import { firebaseAuth, resendVerificationEmail } from "../services/firebase";
 
 const PageWrapper = ({
   children,

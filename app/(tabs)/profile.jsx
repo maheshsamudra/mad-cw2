@@ -23,6 +23,7 @@ import { useFocusEffect, useRouter } from "expo-router";
 import StyledInput from "../../components/styled-input";
 import { updateProfile } from "firebase/auth";
 import styleVariables from "../../constants/styleVariables";
+import { pointsPerStory } from "../../constants";
 
 export default function Profile() {
   return (
@@ -98,6 +99,15 @@ const UserCard = () => {
 
 const Rewards = () => {
   const router = useRouter();
+  const myStories = useUserStore((state) => state.myStories);
+  const myRedeems = useUserStore((state) => state.myRedeems);
+
+  const redeemed = myRedeems.reduce((total, curr) => total + curr.points, 0);
+
+  const pointsAvailable = Math.max(
+    myStories?.length * pointsPerStory - redeemed,
+    0,
+  );
   return (
     <View
       style={{
@@ -110,7 +120,7 @@ const Rewards = () => {
       }}
     >
       <StyledText center style={{ fontSize: 44 }}>
-        22
+        {pointsAvailable}
       </StyledText>
       <StyledText center>points available</StyledText>
       <View
@@ -125,7 +135,9 @@ const Rewards = () => {
             How to?
           </StyledText>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => router.push("/redeem-points")}>
+        <TouchableOpacity
+          onPress={() => router.push("/redeem-points-providers")}
+        >
           <StyledText variant={"button"} muted>
             Redeem
           </StyledText>

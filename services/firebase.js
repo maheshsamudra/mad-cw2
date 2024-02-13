@@ -31,6 +31,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { getFirestore } from "firebase/firestore";
 import cities from "../constants/cities";
+import useUserStore from "../stores/useUserStore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB1ZbSz0QGxPidrTaMYHFscDXnY2gvSteo",
@@ -208,4 +209,36 @@ export const getStory = async (id) => {
 export const deleteStory = async (id) => {
   await deleteDoc(doc(db, "stories", id));
   return true;
+};
+
+export const getMyRedeems = async () => {
+  const items = [];
+
+  const q = query(
+    collection(db, "redeems"),
+    where("userId", "==", firebaseAuth.currentUser.uid),
+    orderBy("createdAt", "desc"),
+  );
+
+  const querySnapshot = await getDocs(q);
+
+  querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+    items.push({
+      ...doc.data(),
+      id: doc.id,
+    });
+  });
+
+  return items;
+};
+
+export const redeemPoints = async (item) => {
+  await addDoc(collection(db, "redeems"), {
+    ...item,
+    userId: firebaseAuth.currentUser.uid,
+    createdAt: new Date(),
+  });
+
+  return await getMyRedeems();
 };

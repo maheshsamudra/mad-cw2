@@ -5,7 +5,7 @@ import { format } from "date-fns";
 import { Alert, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useRouter } from "expo-router";
 import { AntDesign } from "@expo/vector-icons";
-import { deleteStory } from "../services/firebase";
+import { deleteStory, getMyStories } from "../services/firebase";
 import useUserStore from "../stores/useUserStore";
 
 const StoryBlock = ({
@@ -15,6 +15,8 @@ const StoryBlock = ({
 }) => {
   const router = useRouter();
   const user = useUserStore((state) => state.user);
+
+  const setMyStories = useUserStore((state) => state.setMyStories);
 
   const isMyStory = user?.uid === story.userId;
 
@@ -30,11 +32,12 @@ const StoryBlock = ({
         },
         {
           text: "Continue to Delete",
-          onPress: () => {
+          onPress: async () => {
             // delete and go back
-            deleteStory(story.id).then(() => {
+            await deleteStory(story.id).then(() => {
               updateList();
             });
+            await getMyStories().then((res) => setMyStories(res));
           },
         },
       ],

@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { saveStory } from "../../services/firebase";
+import { getMyStories, saveStory } from "../../services/firebase";
 import PageWrapper from "../../components/page-wrapper";
 import React, { useState } from "react";
 import StyledInput from "../../components/styled-input";
@@ -14,10 +14,13 @@ import { Tabs, useRouter } from "expo-router";
 import { AntDesign } from "@expo/vector-icons";
 import StyledText from "../../components/styled-text";
 import styleVariables from "../../constants/styleVariables";
+import useUserStore from "../../stores/useUserStore";
 
 export default function AddStory() {
   const [progress, setProgress] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const setMyStories = useUserStore((state) => state.setMyStories);
 
   const [story, setStory] = useState({});
 
@@ -51,6 +54,8 @@ export default function AddStory() {
     const res = await saveStory(story);
     setProgress(false);
     setStory({});
+
+    await getMyStories().then((res) => setMyStories(res));
     router.push("/my-stories");
   };
 
@@ -125,6 +130,7 @@ export default function AddStory() {
           setValue={(value) => handleValue("googleMapLink", value)}
           label={"Google Map Link"}
           inputMode={"url"}
+          autoCapitalize={"none"}
         />
       </KeyboardAvoidingView>
     </PageWrapper>

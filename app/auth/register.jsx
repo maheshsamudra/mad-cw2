@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import StyledText from "../../components/styled-text";
 import StyledInput from "../../components/styled-input";
 import StyledButton from "../../components/styled-button";
 import { Link } from "expo-router";
 import * as Updates from "expo-updates";
+import Logo from "../../assets/icon.png";
 
 import { register, resendVerificationEmail } from "../../services/firebase";
 import useUserStore from "../../stores/useUserStore";
@@ -16,7 +17,6 @@ const Register = () => {
   const [password, setPassword] = useState("");
 
   const user = useUserStore((state) => state.user);
-  const setUser = useUserStore((state) => state.setUser);
 
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -33,37 +33,56 @@ const Register = () => {
   if (user?.uid && !user?.emailVerified) {
     return (
       <>
-        <View>
+        <View style={{ alignItems: "center" }}>
+          <Image
+            source={Logo}
+            style={{
+              height: 96,
+              width: 96,
+              justifyContent: "center",
+              flexDirection: "row",
+            }}
+          />
           <View style={{ marginHorizontal: styleVariables.gap }}>
+            <StyledText center variant={"title"}>
+              Welcome to Travel Buddy
+            </StyledText>
+            <StyledText />
             <StyledText center>
-              Please verify your email to start using the app. Once the email is
-              verified, the app will reload automatically.
+              Please verify your email to start using the app. Once verified,
+              tap the Refresh button to start using the app.
             </StyledText>
             <StyledText />
 
             <StyledText center>Email address: {user.email}</StyledText>
             <StyledText />
 
-            <TouchableOpacity onPress={resendVerificationEmail}>
-              <StyledText center variant={"button"}>
-                Resend Email
-              </StyledText>
-            </TouchableOpacity>
+            <StyledButton
+              onPress={() => Updates.reloadAsync()}
+              title={"Refresh"}
+            />
 
-            <StyledText />
-            <StyledText />
-
-            <StyledText center>Already Verified?</StyledText>
-            <StyledText />
-            <TouchableOpacity
-              onPress={() => {
-                Updates.reloadAsync();
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginTop: 32,
               }}
             >
-              <StyledText center variant={"button"}>
-                Refresh App
-              </StyledText>
-            </TouchableOpacity>
+              <TouchableOpacity onPress={resendVerificationEmail}>
+                <StyledText center variant={"button"}>
+                  Resend Email
+                </StyledText>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={resendVerificationEmail}>
+                <StyledText center variant={"button"}>
+                  Logout
+                </StyledText>
+              </TouchableOpacity>
+            </View>
+
+            <StyledText />
+            <StyledText />
           </View>
         </View>
       </>

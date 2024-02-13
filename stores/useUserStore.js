@@ -7,6 +7,8 @@ const useUserStore = create((set) => ({
   isLoggedIn: false,
   userCity: cities?.[0],
   rewardPoints: 0,
+  myStories: [],
+  myRedeems: [],
   setUser: (user) =>
     set(() => {
       return {
@@ -25,6 +27,18 @@ const useUserStore = create((set) => ({
     set(() => {
       return {
         rewardPoints,
+      };
+    }),
+  setMyRedeems: (myRedeems) =>
+    set(() => {
+      return {
+        myRedeems,
+      };
+    }),
+  setMyStories: (myStories) =>
+    set(() => {
+      return {
+        myStories,
       };
     }),
 }));

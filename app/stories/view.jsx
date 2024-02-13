@@ -8,7 +8,7 @@ import {
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import PageWrapper from "../../components/page-wrapper";
 import StyledText from "../../components/styled-text";
-import { deleteStory } from "../../services/firebase";
+import { deleteStory, getMyStories } from "../../services/firebase";
 import useStory from "../../hooks/useStory";
 import useUserStore from "../../stores/useUserStore";
 import { format } from "date-fns";
@@ -21,6 +21,8 @@ import { useEffect, useState } from "react";
 export default function ViewStory() {
   const params = useLocalSearchParams();
   const router = useRouter();
+
+  const setMyStories = useUserStore((state) => state.setMyStories);
 
   const user = useUserStore((state) => state.user);
 
@@ -37,11 +39,13 @@ export default function ViewStory() {
         },
         {
           text: "Continue to Delete",
-          onPress: () => {
+          onPress: async () => {
             // delete and go back
-            deleteStory(params.id).then(() => {
+            await deleteStory(params.id).then(() => {
               router.back();
             });
+
+            await getMyStories().then((res) => setMyStories(res));
           },
         },
       ],

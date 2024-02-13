@@ -1,5 +1,5 @@
 import React from "react";
-import { Pressable, StyleSheet } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import StyledText from "./styled-text";
 import styleVariables from "../constants/styleVariables";
 
@@ -10,7 +10,7 @@ const StyledButton = ({
   style = {},
 }) => {
   return (
-    <Pressable
+    <TouchableOpacity
       onPress={() => {
         if (progress) return;
         onPress();
@@ -18,7 +18,7 @@ const StyledButton = ({
       style={[styles.button, progress ? styles.progress : {}, style]}
     >
       <StyledText style={styles.text}>{title}</StyledText>
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 

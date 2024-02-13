@@ -131,6 +131,7 @@ export default function UpdateStory() {
             setValue={(value) => handleValue("googleMapLink", value)}
             label={"Google Map Link"}
             inputMode={"url"}
+            autoCapitalize={"none"}
           />
         </KeyboardAvoidingView>
       )}

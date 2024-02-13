@@ -3,6 +3,7 @@ import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import PageWrapper from "../components/page-wrapper";
 import StyledText from "../components/styled-text";
 import styleVariables from "../constants/styleVariables";
+import { pointsPerStory } from "../constants";
 
 export default function AboutRewardPoints() {
   return (
@@ -18,7 +19,7 @@ export default function AboutRewardPoints() {
       <StyledText />
 
       <StyledText variant={"title"} center>
-        1 story = 10 points
+        1 story = {pointsPerStory} points
       </StyledText>
 
       <StyledText />

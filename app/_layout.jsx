@@ -10,7 +10,6 @@ import {
 import useAuthentication from "../hooks/useAuthentication";
 import useUserStore from "../stores/useUserStore";
 import styleVariables from "../constants/styleVariables";
-import { KeyboardAvoidingView, Platform } from "react-native";
 
 export {
   // Catch any errors thrown by the Layout component.

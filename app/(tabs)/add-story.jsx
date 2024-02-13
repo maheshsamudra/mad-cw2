@@ -31,8 +31,9 @@ export default function AddStory() {
   const setUserCity = useUserStore((state) => state.setUserCity);
 
   const [story, setStory] = useState({
-    images: getImages(),
-    city: getStoryCity(userCity),
+    images: getImages(), // getting the dummy images
+    city: getStoryCity(userCity), // getting the user city
+    // other fields are added to the state when updated by user
   });
 
   useEffect(() => {
@@ -51,26 +52,20 @@ export default function AddStory() {
   const handleSave = async () => {
     setErrorMessage("");
 
-    const isValid =
-      story.title &&
-      story.city &&
-      story.intro &&
-      story.loved &&
-      story.details &&
-      story.improvements &&
-      story.googleMapLink;
-
-    if (!isValid) {
+    if (!isValid(story)) {
       setErrorMessage("All the fields are required!");
       return;
     }
     setProgress(true);
 
-    const res = await saveStory(story);
-    setProgress(false);
-    setStory({ images: getImages() });
-    setUserCity(cities[0]);
+    await saveStory(story);
 
+    setProgress(false);
+
+    setStory({ images: getImages() }); // resetting the story
+    setUserCity(cities[0]); // resetting the selected city by user
+
+    // updating my stories
     await getMyStories().then((res) => setMyStories(res));
     router.push("/my-stories");
   };
@@ -220,3 +215,12 @@ const getImages = (array = images) => {
 };
 
 const getStoryCity = (city) => (city !== cities[0] ? city : "");
+
+const isValid = (story) =>
+  story.title &&
+  story.city &&
+  story.intro &&
+  story.loved &&
+  story.details &&
+  story.improvements &&
+  story.googleMapLink;

@@ -6,6 +6,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import useUserStore from "../stores/useUserStore";
 
 const useAuthentication = () => {
+  // accessing data from the central store with zustand
   const setUser = useUserStore((state) => state.setUser);
   const user = useUserStore((state) => state.user);
 
@@ -13,6 +14,7 @@ const useAuthentication = () => {
   const setMyRedeems = useUserStore((state) => state.setMyRedeems);
 
   useEffect(() => {
+    // listening to auth state changes
     onAuthStateChanged(firebaseAuth, (user) => {
       setUser(user);
     });
@@ -20,6 +22,7 @@ const useAuthentication = () => {
 
   useEffect(() => {
     if (!user?.uid) return;
+    // fetching user's stories and the reward points
     getMyStories().then((res) => {
       setMyStories(res);
     });

@@ -23,7 +23,7 @@ import { useFocusEffect, useRouter } from "expo-router";
 import StyledInput from "../../components/styled-input";
 import { updateProfile } from "firebase/auth";
 import styleVariables from "../../constants/styleVariables";
-import { pointsPerStory } from "../../constants";
+import { pointsPerStory } from "../../constants/rewardPoints";
 
 export default function Profile() {
   return (

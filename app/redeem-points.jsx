@@ -14,7 +14,7 @@ import styleVariables from "../constants/styleVariables";
 import { redeemPoints } from "../services/firebase";
 import useUserStore from "../stores/useUserStore";
 import { useState } from "react";
-import { pointsPerStory, valuePerPoint } from "../constants";
+import { pointsPerStory, valuePerPoint } from "../constants/rewardPoints";
 
 export default function RedeemPoints() {
   const params = useLocalSearchParams();

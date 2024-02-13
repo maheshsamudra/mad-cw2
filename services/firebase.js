@@ -9,8 +9,6 @@ import {
   updateProfile,
   signOut,
   sendEmailVerification,
-  reauthenticateWithCredential,
-  EmailAuthProvider,
 } from "firebase/auth";
 
 import {
@@ -31,7 +29,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { getFirestore } from "firebase/firestore";
 import cities from "../constants/cities";
-import useUserStore from "../stores/useUserStore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB1ZbSz0QGxPidrTaMYHFscDXnY2gvSteo",
@@ -42,18 +39,18 @@ const firebaseConfig = {
   appId: "1:585903002840:web:3222364a969c1dbbb333ad",
 };
 
-// For more information on how to access Firebase in your project,
-// see the Firebase documentation: https://firebase.google.com/docs/web/setup#access-firebase
-
+// Making sure only a single instance of firebase is there
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 
+// accessing firebase auth
 export const firebaseAuth = initializeAuth(app, {
   persistence: getReactNativePersistence(AsyncStorage),
 });
 
-export default app;
-
+// accessing the database
 export const db = getFirestore(app);
+
+export default app;
 
 export const register = async (email, password, displayName) => {
   return await createUserWithEmailAndPassword(firebaseAuth, email, password)
@@ -77,7 +74,7 @@ export const register = async (email, password, displayName) => {
 
 export const login = async (email, password) => {
   return await signInWithEmailAndPassword(firebaseAuth, email, password)
-    .then((userCredential) => {
+    .then(() => {
       return true;
     })
     .catch((error) => {

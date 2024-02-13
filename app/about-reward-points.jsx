@@ -3,7 +3,7 @@ import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import PageWrapper from "../components/page-wrapper";
 import StyledText from "../components/styled-text";
 import styleVariables from "../constants/styleVariables";
-import { pointsPerStory } from "../constants";
+import { pointsPerStory } from "../constants/rewardPoints";
 
 export default function AboutRewardPoints() {
   return (

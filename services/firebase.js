@@ -88,11 +88,13 @@ export const login = async (email, password) => {
 };
 
 export const handleLogout = async () => {
-  await signOut(firebaseAuth);
+  await signOut(firebaseAuth).catch((e) => console.log(e));
 };
 
 export const resendVerificationEmail = async () => {
-  await sendEmailVerification(firebaseAuth.currentUser);
+  await sendEmailVerification(firebaseAuth.currentUser).catch((e) => {
+    console.log(e);
+  });
   return true;
 };
 

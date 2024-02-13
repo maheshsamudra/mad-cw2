@@ -7,7 +7,11 @@ import { Link } from "expo-router";
 import * as Updates from "expo-updates";
 import Logo from "../../assets/icon.png";
 
-import { register, resendVerificationEmail } from "../../services/firebase";
+import {
+  handleLogout,
+  register,
+  resendVerificationEmail,
+} from "../../services/firebase";
 import useUserStore from "../../stores/useUserStore";
 import styleVariables from "../../constants/styleVariables";
 
@@ -74,7 +78,7 @@ const Register = () => {
                   Resend Email
                 </StyledText>
               </TouchableOpacity>
-              <TouchableOpacity onPress={resendVerificationEmail}>
+              <TouchableOpacity onPress={handleLogout}>
                 <StyledText center variant={"button"}>
                   Logout
                 </StyledText>

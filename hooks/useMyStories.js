@@ -1,7 +1,14 @@
 import { useState, useCallback } from "react";
 import { useFocusEffect } from "expo-router";
-import { getMyStories } from "../services/firebase";
+import { db, firebaseAuth, getMyStories } from "../services/firebase";
 import useUserStore from "../stores/useUserStore";
+import {
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
 
 const useMyStories = (refresh = 0) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -13,11 +20,31 @@ const useMyStories = (refresh = 0) => {
     useCallback(() => {
       if (!isLoggedIn) return;
       setIsLoading(true);
-      getMyStories()
-        .then((res) => {
-          setData(res);
-        })
-        .finally(() => setIsLoading(false));
+
+      const q = query(
+        collection(db, "stories"),
+        where("userId", "==", firebaseAuth.currentUser.uid),
+        orderBy("createdAt", "desc"),
+      );
+
+      // const querySnapshot = await getDocs(q);
+
+      onSnapshot(q, (querySnapshot) => {
+        const myStories = [];
+
+        querySnapshot.forEach((doc) => {
+          myStories.push({ ...doc.data(), id: doc.id });
+        });
+
+        setData(myStories);
+        setIsLoading(false);
+      });
+
+      // getMyStories()
+      //   .then((res) => {
+      //     setData(res);
+      //   })
+      //   .finally(() => setIsLoading(false));
     }, [refresh, isLoggedIn]),
   );
 

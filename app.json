@@ -23,7 +23,10 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.travel.buddy.app"
+      "package": "com.travel.buddy.app",
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -48,7 +51,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "a6768797-2d96-42ba-a638-a2fa7785447f"
+        "projectId": "877effcd-88b9-4d26-af92-81dc02c34073"
       }
     }
   }

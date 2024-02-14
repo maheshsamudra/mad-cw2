@@ -36,6 +36,3 @@ yarn-error.*
 *.tsbuildinfo
 
 
-"eas": {
-        "projectId": "a6768797-2d96-42ba-a638-a2fa7785447f"
-      }

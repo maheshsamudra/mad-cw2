@@ -24,7 +24,6 @@ import {
   limit,
   updateDoc,
   initializeFirestore,
-  onSnapshot,
 } from "firebase/firestore";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -153,21 +152,15 @@ export const getMyStories = async () => {
     orderBy("createdAt", "desc"),
   );
 
-  // const querySnapshot = await getDocs(q);
+  const querySnapshot = await getDocs(q);
 
-  await onSnapshot(q, (querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-      myStories.push({ ...doc.data(), id: doc.id });
+  querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+    myStories.push({
+      ...doc.data(),
+      id: doc.id,
     });
   });
-
-  // querySnapshot.forEach((doc) => {
-  //   // doc.data() is never undefined for query doc snapshots
-  //   myStories.push({
-  //     ...doc.data(),
-  //     id: doc.id,
-  //   });
-  // });
 
   return myStories;
 };
@@ -189,19 +182,13 @@ export const getAllStories = async (userCity) => {
           limit(100),
         );
 
-  // const querySnapshot = await getDocs(q);
-  //
-  // querySnapshot.forEach((doc) => {
-  //   // doc.data() is never undefined for query doc snapshots
-  //   allStories.push({
-  //     ...doc.data(),
-  //     id: doc.id,
-  //   });
-  // });
+  const querySnapshot = await getDocs(q);
 
-  await onSnapshot(q, (querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-      allStories.push({ ...doc.data(), id: doc.id });
+  querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+    allStories.push({
+      ...doc.data(),
+      id: doc.id,
     });
   });
 

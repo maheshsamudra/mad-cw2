@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { db, getAllStories } from "../services/firebase";
+import { db } from "../services/firebase";
 import useUserStore from "../stores/useUserStore";
 import cities from "../constants/cities";
 import {
@@ -21,8 +21,6 @@ const useAllStories = (userCity = "", refresh = "") => {
     if (!isLoggedIn) return;
     setIsLoading(true);
 
-    const allStories = [];
-
     const q =
       userCity === cities[0]
         ? query(
@@ -37,16 +35,6 @@ const useAllStories = (userCity = "", refresh = "") => {
             limit(100),
           );
 
-    // const querySnapshot = await getDocs(q);
-    //
-    // querySnapshot.forEach((doc) => {
-    //   // doc.data() is never undefined for query doc snapshots
-    //   allStories.push({
-    //     ...doc.data(),
-    //     id: doc.id,
-    //   });
-    // });
-
     onSnapshot(q, (querySnapshot) => {
       const allStories = [];
       querySnapshot.forEach((doc) => {
@@ -56,12 +44,6 @@ const useAllStories = (userCity = "", refresh = "") => {
       setData(allStories);
       setIsLoading(false);
     });
-
-    // getAllStories(userCity)
-    //   .then((res) => {
-    //     setData(res);
-    //   })
-    //   .finally(() => setIsLoading(false));
   }, [userCity, isLoggedIn, refresh]);
 
   return { data, isLoading };

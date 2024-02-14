@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { useFocusEffect } from "expo-router";
-import { getMyStories, getStory } from "../services/firebase";
+import { getStory } from "../services/firebase";
 
 const useStory = (id) => {
   const [isLoading, setIsLoading] = useState(true);

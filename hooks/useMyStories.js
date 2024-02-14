@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { useFocusEffect } from "expo-router";
-import { db, firebaseAuth, getMyStories } from "../services/firebase";
+import { db, firebaseAuth } from "../services/firebase";
 import useUserStore from "../stores/useUserStore";
 import {
   collection,
@@ -27,8 +27,6 @@ const useMyStories = (refresh = 0) => {
         orderBy("createdAt", "desc"),
       );
 
-      // const querySnapshot = await getDocs(q);
-
       onSnapshot(q, (querySnapshot) => {
         const myStories = [];
 
@@ -39,12 +37,6 @@ const useMyStories = (refresh = 0) => {
         setData(myStories);
         setIsLoading(false);
       });
-
-      // getMyStories()
-      //   .then((res) => {
-      //     setData(res);
-      //   })
-      //   .finally(() => setIsLoading(false));
     }, [refresh, isLoggedIn]),
   );
 

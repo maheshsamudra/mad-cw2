@@ -18,8 +18,6 @@ export default function MyStories() {
   const [refresh, setRefresh] = useState(0);
   const { data, isLoading } = useMyStories(refresh);
 
-  const router = useRouter();
-
   return (
     <PageWrapper isLoading={isLoading && !data?.length} hasTabs>
       {!data?.length ? (

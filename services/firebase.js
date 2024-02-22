@@ -132,10 +132,7 @@ export const saveStory = async (data) => {
 };
 
 export const updateStory = async (data) => {
-  const id = data.id;
-  delete data.id;
-
-  await updateDoc(doc(db, "stories", id), {
+  await updateDoc(doc(db, "stories", data.id), {
     ...data,
     userId: firebaseAuth.currentUser.uid,
   });
